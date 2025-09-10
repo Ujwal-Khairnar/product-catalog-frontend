@@ -1,0 +1,36 @@
+<h2 *ngIf="!isEditMode">Add New Product</h2>
+<h2 *ngIf="isEditMode">Edit Product</h2>
+
+<form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="form-container">
+  <label>
+    Product Name:
+    <input type="text" formControlName="name">
+    <span class="error" *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched">
+      Name is required
+    </span>
+  </label>
+
+  <label>
+    Price:
+    <input type="number" formControlName="price">
+    <span class="error" *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched">
+      Price must be positive
+    </span>
+  </label>
+
+  <div class="buttons">
+    <button type="submit" [disabled]="productForm.invalid">Save</button>
+    <a routerLink="/" class="cancel-btn">Cancel</a>
+  </div>
+</form>
+
+<div *ngIf="isEditMode" class="upload-container">
+  <h3>Upload Product Image</h3>
+  <input type="file" (change)="onFileSelected($event)">
+  <button (click)="onUpload()" [disabled]="!selectedFile">Upload</button>
+
+  <div *ngIf="currentImageUrl" class="preview">
+    <p>Current Image:</p>
+    <img [src]="currentImageUrl" alt="Current product image" width="150">
+  </div>
+</div>

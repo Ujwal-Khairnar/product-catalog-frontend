@@ -1,0 +1,33 @@
+<a routerLink="/add-product" class="add-button">Add New Product</a>
+
+<div *ngIf="!isLoading; else loading">
+  <p *ngIf="products.length === 0" style="margin-top: 20px;">No products found. Please add one!</p>
+
+  <table *ngIf="products.length > 0" class="product-table">
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products">
+        <td>
+          <img [src]="product.imageUrl || 'assets/placeholder.png'" alt="{{ product.name }}" width="50">
+        </td>
+        <td>{{ product.name }}</td>
+        <td>${{ product.price | number:'1.2-2' }}</td>
+        <td>
+          <button class="delete-btn" (click)="onDelete(product.id)">Delete</button>
+          <a class="edit-btn" [routerLink]="['/edit-product', product.id]">Edit</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #loading>
+  <p style="margin-top: 20px;">Loading products...</p>
+</ng-template>

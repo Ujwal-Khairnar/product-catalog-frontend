@@ -6,6 +6,10 @@
     "outDir": "./out-tsc/app",
     "types": []
   },
+  "files": [
+    "src/main.ts",
+    "src/environments/environment.ts" // <-- ADD THIS LINE
+  ],
   "include": [
     "src/**/*.ts"
   ],
