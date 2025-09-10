@@ -1,0 +1,49 @@
+name: Build and Deploy Angular App to Azure
+
+# This section defines when the workflow will run.
+on:
+  # Run automatically whenever you push code to the 'main' branch.
+  push:
+    branches:
+      - main
+  # This also allows you to run the workflow manually from the GitHub Actions tab.
+  workflow_dispatch:
+
+# This section defines the jobs to be done.
+jobs:
+  build-and-deploy:
+    # The job will run on a standard virtual machine provided by GitHub.
+    runs-on: ubuntu-latest
+
+    # These are the individual steps the job will perform in order.
+    steps:
+      # Step 1: Download your repository's code into the virtual machine.
+      - name: 'Checkout Github Action'
+        uses: actions/checkout@v4
+
+      # Step 2: Install the correct version of Node.js.
+      - name: 'Setup Node.js'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x' # This should match the runtime of your Azure App Service.
+
+      # Step 3: Run the 'npm install' command to install all dependencies from package.json.
+      - name: 'Install Dependencies'
+        run: npm install
+
+      # Step 4: Run the 'npm run build' command to compile your Angular app for production.
+      - name: 'Build Project'
+        run: npm run build -- --configuration production
+
+      # Step 5: Take the compiled files and deploy them to your Azure App Service.
+      - name: 'Deploy to Azure Web App'
+        uses: azure/webapps-deploy@v2
+        with:
+          # CRITICAL: Change this to the exact name of your frontend App Service.
+          app-name: 'product-webapp-ujwal' 
+          
+          # This tells the action to use the secure key you created in GitHub settings.
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }} 
+          
+          # This is the folder where the built application files are located after the 'Build Project' step.
+          package: './dist/product-catalog-frontend'
