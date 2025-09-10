@@ -43,7 +43,7 @@ jobs:
           app-name: 'product-webapp-ujwal' 
           
           # This tells the action to use the secure key you created in GitHub settings.
-          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }} 
+          publish-profile: ${{ secrets.AZUREPUBLISHPROFILE }} 
           
           # This is the folder where the built application files are located after the 'Build Project' step.
           package: './dist/product-catalog-frontend'
